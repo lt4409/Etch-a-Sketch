@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Etch-a-Sketch</title>
+</head>
+<body>
+
+    <button>Change the size of the grid!</button>
+
+<script>
+    const gridContainer = document.createElement('div');
+    gridContainer.classList.add('grid-container');
+    document.body.appendChild(gridContainer);
+
+    const button = document.querySelector('button');
+
+    button.addEventListener('click', function () {
+        let rowsColumns = prompt("How many columns/rows do you want the grid to have?");
+        rowsColumns = parseInt(rowsColumns);
+
+        if (!isNaN(rowsColumns) && rowsColumns > 0) {
+            createGrid(rowsColumns);
+        } else {
+            alert("Please enter a valid positive number.");
+        }
+    });
+
+    function createGrid(rowsColumns) {
+        gridContainer.innerHTML = ''; 
+
+        gridContainer.style.display = 'grid';
+        gridContainer.style.gridTemplateColumns = `repeat(${rowsColumns}, 1fr)`;
+        gridContainer.style.gridTemplateRows = `repeat(${rowsColumns}, 1fr)`;
+
+        let totalItems = rowsColumns * rowsColumns;
+        console.log(`Creating grid with ${totalItems} items.`);
+
+        for (let i = 0; i < totalItems; i++) {
+            const gridItem = document.createElement('div');
+            gridItem.classList.add('grid-item');
+            gridContainer.appendChild(gridItem);
+
+            gridItem.addEventListener('mouseover', function () {
+                gridItem.style.backgroundColor = randomColor();
+            });
+        }
+    }
+
+    const randomColor = () => {
+        const r = Math.floor(Math.random() * 255);
+        const g = Math.floor(Math.random() * 255);
+        const b = Math.floor(Math.random() * 255);
+
+        const brightness = r * 0.299 + g * 0.587 + b * 0.114;
+
+        if (brightness > 186) {
+            return 'black';
+        } else {
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+    }
+
+    createGrid(16);
+</script>
+
+</body>
+</html>
